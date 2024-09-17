@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vulnerability Scanning Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .results {
+            margin-top: 20px;
+        }
+        .vuln {
+            color: red;
+        }
+        .safe {
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Vulnerability Scanning Tool</h2>
+    <input type="text" id="domain" placeholder="Enter website or IP to scan">
+    <button onclick="runScan()">Scan for Vulnerabilities</button>
+    <div id="results" class="results"></div>
+</div>
+
+<script>
+function runScan() {
+    const domain = document.getElementById('domain').value;
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = '';
+
+    if (!domain) {
+        alert('Please enter a valid domain or IP address.');
+        return;
+    }
+
+    // Simulating a vulnerability scan
+    let vulnerabilitiesFound = false;
+    let resultsHTML = `<h3>Scanning ${domain}...</h3>`;
+
+    // Check for open ports (common ones)
+    const openPorts = checkOpenPorts(domain);
+    if (openPorts.length > 0) {
+        vulnerabilitiesFound = true;
+        resultsHTML += `<p class="vuln">Open Ports Detected: ${openPorts.join(', ')}</p>`;
+    } else {
+        resultsHTML += `<p class="safe">No Open Ports Detected.</p>`;
+    }
+
+    // Check for outdated software (simulated version check)
+    const outdatedSoftware = checkOutdatedSoftware(domain);
+    if (outdatedSoftware) {
+        vulnerabilitiesFound = true;
+        resultsHTML += `<p class="vuln">Outdated Software Detected: ${outdatedSoftware}</p>`;
+    } else {
+        resultsHTML += `<p class="safe">No Outdated Software Detected.</p>`;
+    }
+
+    // Check for basic misconfigurations
+    const misconfigurations = checkMisconfigurations(domain);
+    if (misconfigurations.length > 0) {
+        vulnerabilitiesFound = true;
+        resultsHTML += `<p class="vuln">Misconfigurations Detected: ${misconfigurations.join(', ')}</p>`;
+    } else {
+        resultsHTML += `<p class="safe">No Misconfigurations Detected.</p>`;
+    }
+
+    if (!vulnerabilitiesFound) {
+        resultsHTML += `<h4 class="safe">No vulnerabilities found! The domain is secure.</h4>`;
+    }
+
+    resultsDiv.innerHTML = resultsHTML;
+}
+
+// Simulate checking for open ports
+function checkOpenPorts(domain) {
+    // Simulating a check on common ports like HTTP (80), HTTPS (443), SSH (22), FTP (21)
+    const commonPorts = [80, 443, 21, 22, 8080];
+    const openPorts = [];
+
+    // Randomly "detect" some open ports for the sake of the demo
+    commonPorts.forEach(port => {
+        if (Math.random() > 0.5) {
+            openPorts.push(port);
+        }
+    });
+
+    return openPorts;
+}
+
+// Simulate checking for outdated software
+function checkOutdatedSoftware(domain) {
+    // Simulated software version check
+    const outdated = Math.random() > 0.5;  // 50% chance it's outdated
+
+    if (outdated) {
+        return 'Apache HTTP Server 2.2 (outdated version)';
+    }
+
+    return null;
+}
+
+// Simulate checking for misconfigurations
+function checkMisconfigurations(domain) {
+    // Simulated misconfiguration check (e.g., SSL/TLS issues, security headers)
+    const misconfigurations = [];
+
+    // Randomly "detect" misconfigurations for demo
+    if (Math.random() > 0.5) {
+        misconfigurations.push('Missing HTTP Strict Transport Security (HSTS)');
+    }
+    if (Math.random() > 0.5) {
+        misconfigurations.push('SSL Certificate Expired');
+    }
+
+    return misconfigurations;
+}
+</script>
+
+</body>
+</html>
